@@ -11,6 +11,10 @@ def face_detection_and_send():
     face_cascade = cv2.CascadeClassifier(cascade_path)
     cap = cv2.VideoCapture(0)
 
+    if not cap.isOpened():
+        print("Cannot open camera")
+        exit()
+
     last_sent_time = 0
     send_interval = 5 
     sent_hashes = set()
@@ -45,7 +49,7 @@ def face_detection_and_send():
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
         if len(faces) > 0:
-            print(f"Обнаружено {len(faces)} лиц(а).")
+            print(f"Detected {len(faces)} faces.")
 
             current_time = time.time()
             if current_time - last_sent_time >= send_interval:
